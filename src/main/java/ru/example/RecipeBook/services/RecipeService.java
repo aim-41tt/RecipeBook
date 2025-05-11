@@ -5,8 +5,9 @@ import java.util.Optional;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import jakarta.transaction.Transactional;
+//import jakarta.transaction.Transactional;
 import ru.example.RecipeBook.models.Recipe;
 import ru.example.RecipeBook.repository.RecipeRepo;
 
@@ -42,4 +43,5 @@ public class RecipeService {
 	public void delId(Long id) {
 		recipeRepo.deleteById(id);
 	}
+
 }

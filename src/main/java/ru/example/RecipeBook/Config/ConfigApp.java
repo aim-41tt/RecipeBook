@@ -11,10 +11,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import ru.example.RecipeBook.ui.MainPage;
 import ru.example.RecipeBook.ui.auth.LoginPage;
 import ru.example.RecipeBook.ui.auth.RegPage;
-import ru.example.RecipeBook.ui.pages.CategoriePage;
 import ru.example.RecipeBook.ui.pages.FavoritePage;
 import ru.example.RecipeBook.ui.pages.MainMenuPage;
 import ru.example.RecipeBook.ui.pages.SettingsPage;
+import ru.example.RecipeBook.ui.pages.categori.CategoriePage;
+import ru.example.RecipeBook.ui.pages.categori.CreateCategoriePage;
 import ru.example.RecipeBook.ui.pages.recipe.CreateRecipePage;
 import ru.example.RecipeBook.ui.pages.recipe.EditRecipePage;
 import ru.example.RecipeBook.ui.pages.recipe.ReceptsPage;
@@ -55,6 +56,9 @@ public class ConfigApp {
        
         app.addPage(CreateRecipePage.class);
         app.addPage(EditRecipePage.class);
+        
+        app.addPage(CategoriePage.class);
+        app.addPage(CreateCategoriePage.class);
         
         app.start();
     }

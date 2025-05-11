@@ -71,5 +71,12 @@ public class AuthService {
 	public User getUserAuth() {
 		return userAuth;
 	}
+	public static User getUserAuthStat() {
+		return userAuth;
+	}
+	public User getUserById(Long id) {
+		User user = userRepo.findById(id).get();
+		return user;
+	}
 
 }

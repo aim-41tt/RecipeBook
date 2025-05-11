@@ -12,4 +12,5 @@ public interface RecipeRepo extends JpaRepository<Recipe, Long> {
 	@Query("SELECT r FROM Recipe r JOIN FETCH r.category ORDER BY r.recipeId DESC")
 	List<Recipe> findLatestWithCategory(PageRequest pageable);
 
+    
 }

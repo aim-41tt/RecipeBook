@@ -28,7 +28,7 @@ public class EditRecipePage extends Page {
 	private byte[] imageData = null;
 
 	private static Long recipeId = 1L;
-	private Recipe loadedRecipe;
+	private Recipe loadedRecipe = new Recipe();
 
 	public static void setRecipeId(Long recipeId) {
 		EditRecipePage.recipeId = recipeId;
@@ -43,7 +43,7 @@ public class EditRecipePage extends Page {
 
 		loadedRecipe = recipeService.getById(recipeId).orElse(null);
 		if (loadedRecipe == null) {
-			JOptionPane.showMessageDialog(getPanel(), "Рецепт не найден");
+//			JOptionPane.showMessageDialog(getPanel(), "Рецепт не найден");
 			navigateTo(ReceptsPage.class);
 			return;
 		}

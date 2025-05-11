@@ -4,9 +4,9 @@ import javax.swing.*;
 
 import dev.aim_41tt.sling.core.Page;
 import ru.example.RecipeBook.Config.ClientSettings;
-import ru.example.RecipeBook.ui.pages.CategoriePage;
 import ru.example.RecipeBook.ui.pages.FavoritePage;
 import ru.example.RecipeBook.ui.pages.SettingsPage;
+import ru.example.RecipeBook.ui.pages.categori.CategoriePage;
 import ru.example.RecipeBook.ui.pages.recipe.ReceptsPage;
 import ru.example.RecipeBook.ui.reports.ReportsPage;
 
@@ -65,9 +65,15 @@ public class NavigationPanel extends Page {
 			navigateTo(ReceptsPage.class);
 		});
 		addNavButton("Избранное", buttonRow, "/images/icon_butten/izbr.png", () -> {
+			Page page = app.getPage(FavoritePage.class);
+			page.repaint();
+			page.onCreate();
 			navigateTo(FavoritePage.class);
 		});
 		addNavButton("Категории", buttonRow, "/images/icon_butten/katalogs.png", () -> {
+			Page page = app.getPage(CategoriePage.class);
+			page.repaint();
+			page.onCreate();
 			navigateTo(CategoriePage.class);
 		});
 		addNavButton("Отчёты", buttonRow, "/images/icon_butten/Otch.png", () -> {

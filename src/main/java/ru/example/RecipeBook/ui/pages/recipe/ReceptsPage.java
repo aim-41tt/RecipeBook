@@ -9,19 +9,23 @@ import dev.aim_41tt.sling.core.Page;
 import ru.example.RecipeBook.Config.ClientSettings;
 import ru.example.RecipeBook.Config.SpringContext;
 import ru.example.RecipeBook.models.Recipe;
+import ru.example.RecipeBook.models.User;
+import ru.example.RecipeBook.services.AuthService;
+import ru.example.RecipeBook.services.FavoriteService;
 import ru.example.RecipeBook.services.RecipeService;
 import ru.example.RecipeBook.ui.NavigationPanel;
-//import ru.example.RecipeBook.ui.pages.details.RecipeDetailPage;
 
 public class ReceptsPage extends Page {
 
 	private final RecipeService recipeService = SpringContext.getBean(RecipeService.class);
+	private final FavoriteService favoriteService = SpringContext.getBean(FavoriteService.class);
 	private final Color accentColor = Color.decode("#C6AA67");
+	private static User user = AuthService.getUserAuthStat();
 
 	@Override
 	public void onCreate() {
 		setTitle(" - Рецепты");
-		
+
 		getPanel().setLayout(new BorderLayout());
 		getPanel().setBackground(ClientSettings.getSettings().getThemeColor());
 
@@ -97,14 +101,6 @@ public class ReceptsPage extends Page {
 		button.setForeground(Color.WHITE);
 		button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
-		
-		// кнопка избраного
-		JButton button1 = new JButton("☆");
-		button1.setPreferredSize(new Dimension(200, 25));
-		button1.setFont(new Font("SansSerif", Font.PLAIN, 16));
-		button1.setAlignmentX(Component.CENTER_ALIGNMENT);
-		button.add(button1);
-		
 		// 1. Картинка рецепта
 		byte[] imageBytes = recipe.getImage();
 		if (imageBytes != null && imageBytes.length > 0) {
@@ -116,7 +112,6 @@ public class ReceptsPage extends Page {
 			button.add(imageLabel);
 		}
 
-		
 		// 2. Название рецепта
 		JLabel nameLabel = new JLabel(recipe.getRecipeName(), SwingConstants.CENTER);
 		nameLabel.setFont(new Font(ClientSettings.getSettings().getFont(), Font.BOLD, 14));
@@ -139,16 +134,49 @@ public class ReceptsPage extends Page {
 		button.add(categoryLabel);
 
 		button.addActionListener((ActionEvent e) -> openRecipeDetail(recipe.getRecipeId()));
+
+		// ===== Кнопка "Избранное" =====
+		JButton favButton = new JButton("★");
+		favButton.setBounds(0, 0, 40, 40);
+		favButton.setFont(new Font("SansSerif", Font.PLAIN, 25));
+		favButton.setBorderPainted(false);
+		favButton.setFocusPainted(false);
+		favButton.setContentAreaFilled(false);
+		favButton.setForeground(Color.BLACK);
+		favButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+		user = AuthService.getUserAuthStat();
+
+		switch ((user == null) ? 1 : 0) {
+		case 1: {
+			user = AuthService.getUserAuthStat();
+			if (user == null) {
+				break;
+			}
+		}
+		case 0: {
+			boolean isFavorite = favoriteService.isFavorite(user.getUserId(), recipe.getRecipeId());
+			favButton.setForeground(isFavorite ? Color.decode("#ffd700") : Color.BLACK);
+
+			favButton.addActionListener(e -> {
+				boolean isNowFavorite = favoriteService.toggleFavorite(user.getUserId(), recipe.getRecipeId());
+				favButton.setForeground(isNowFavorite ? Color.decode("#ffd700") : Color.BLACK);
+			});
+
+			button.add(Box.createVerticalStrut(5));
+			button.add(favButton);
+		}
+
+		}
+
 		return button;
 	}
-
 
 	private void openRecipeDetail(Long recipeId) {
 		EditRecipePage.setRecipeId(recipeId);
 		Page page = app.getPage(EditRecipePage.class);
 		page.repaint();
 		page.onCreate();
-	    navigateTo(EditRecipePage.class);
+		navigateTo(EditRecipePage.class);
 	}
 
 	private void openPageCreateRecipe() {

@@ -25,8 +25,10 @@ public class Recipe {
 	@Column(nullable = false)
 	private String recipeName;
 
+	@Column(columnDefinition = "TEXT")
 	private String ingredients;
-
+	
+	@Column(columnDefinition = "TEXT")
 	private String instructions;
 
 	@Column(name = "image")
